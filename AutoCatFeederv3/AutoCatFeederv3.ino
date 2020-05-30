@@ -7,7 +7,7 @@
 -- yukarıdaki şekilde hata verdiğinde kütüphanedeki ilgili bölümün dınanıma göre uygun şekilde değişitilrmesi lazım.
 -- Bunun bir iyi versiyonu daha vardı. orada otomatik olarak oled ekranı kapatan kodlar da vardı. Nereye gittiklerini bilmiyorum.
 -- onenote içinde daha detaylı açıklamalar var.
---test
+--testtest
 
 mode values
 0 do nothing
