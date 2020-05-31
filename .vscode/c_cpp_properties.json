@@ -8,9 +8,9 @@
                 "D:\\WIN10 Programs\\arduinoide\\Arduino\\hardware\\tools\\avr\\lib\\gcc\\avr\\5.4.0\\**",
                 "D:\\WIN10 Programs\\arduinoide\\Arduino\\hardware\\arduino\\avr\\cores\\arduino",
                 "D:\\WIN10 Programs\\arduinoide\\Arduino\\hardware\\arduino\\avr\\variants\\standard",
-                "D:\\WIN10 Programs\\arduinoide\\Arduino\\hardware\\arduino\\avr\\libraries\\SPI\\src\\**",       
+                "D:\\WIN10 Programs\\arduinoide\\Arduino\\hardware\\arduino\\avr\\libraries\\SPI\\src\\**",
                 "D:\\WIN10 Programs\\arduinoide\\Arduino\\hardware\\arduino\\avr\\libraries\\Wire\\src\\**",
-                "D:\\WIN10 Programs\\arduinoide\\Arduino\\hardware\\tools\\avr\\avr\\include\\**",                
+                "D:\\WIN10 Programs\\arduinoide\\Arduino\\hardware\\tools\\avr\\avr\\include\\**",
                 "D:\\OneDrive\\Documents\\Arduino\\libraries\\**"
             ],
             "forcedInclude": [

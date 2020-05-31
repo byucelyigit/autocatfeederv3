@@ -36,7 +36,7 @@ buttonStatus
 
 #include <SPI.h>
 #include <Wire.h>
-#include <Adafruit_GFX.h>
+//#include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 #include <X113647Stepper.h>
 #include <RTClib.h>
@@ -44,9 +44,6 @@ buttonStatus
 #include <HX711.h>
 
 
-
-
-#define calibration_factor -1050 //This value is obtained using the SparkFun_HX711_Calibration sketch
 
 #define DOUT1 7
 #define CLK1  6
@@ -93,6 +90,7 @@ int alarmHr = 0;
 int alarmMin = 0;
 int clockHr = 0;
 int clockMin = 0;
+float calibration_factor = -1050; //-7050 worked for my 440lb max scale setup
   
 
 
@@ -140,7 +138,17 @@ void setup()   {
   display.clearDisplay();
 
   scale.begin(DOUT1, CLK1);
+
+
+
+
   scale.set_scale(calibration_factor); //This value is obtained by using the SparkFun_HX711_Calibration sketch
+
+  long zero_factor = scale.read_average(); //Get a baseline reading
+  Serial.print("Zero factor: "); //This can be used to remove the need to tare the scale. Useful in permanent scale projects.
+  Serial.println(zero_factor);
+
+
   scale.tare(); //Assuming there is no weight on the scale at start up, reset the scale to 0
 
   //Serial.println("Readings:");
@@ -242,8 +250,8 @@ void loop() {
 
   //Serial.print("Reading: ");
   float scl = scale.get_units();
-  Serial.println(scl, 1); //scale.get_units() returns a float
-  //scaleText = ScaleFormat(scl);
+  Serial.println(scl); //scale.get_units() returns a float
+  scaleText = ScaleFormat(scl);
   //Serial.print(" gr"); //You can change this to kg but you'll need to refactor the calibration_factor
   //Serial.println();
 
