@@ -482,17 +482,32 @@ void loop() {
 
   //display.print(SaatFormat(now.hour(), now.minute(),now.second()));
 
-  display.print(now.hour());
+  char timestr[4];
+  timestr[0] = '0' + now.hour() / 10;
+  timestr[1] = '0' + now.hour() % 10;
+  display.print(timestr[0]);
+  display.print(timestr[1]);
   display.print(":");
-  display.print(now.minute());
+  timestr[2] = '0' + now.minute() / 10;
+  timestr[3] = '0' + now.minute() % 10;
+  display.print(timestr[2]);
+  display.print(timestr[3]);
   
   display.setCursor(0,40);
   display.setTextSize(2);
   //display.print(AlarmFormat(alarmHr, alarmMin));
-  display.print(alarmHr);
+
+  char alarmstr[4];
+  alarmstr[0] = '0' + alarmHr / 10;
+  alarmstr[1] = '0' + alarmHr() % 10;
+  display.print(alarmstr[0]);
+  display.print(alarmstr[1]);
   display.print(":");
-  display.print(alarmMin);
-  
+  alarmstr[2] = '0' + alarmMin / 10;
+  alarmstr[3] = '0' + alarmMin() % 10;
+  display.print(alarmstr[2]);
+  display.print(alarmstr[3]);
+
 
   //display.setCursor(0,55);
   //display.setTextSize(1);
