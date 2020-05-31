@@ -2,5 +2,6 @@
     "programmer": "AVR ISP",
     "board": "arduino:avr:mega",
     "configuration": "cpu=atmega2560",
-    "sketch": "AutoCatFeederv3\\AutoCatFeederv3.ino"
+    "sketch": "AutoCatFeederv3\\AutoCatFeederv3.ino",
+    "port": "COM4"
 }

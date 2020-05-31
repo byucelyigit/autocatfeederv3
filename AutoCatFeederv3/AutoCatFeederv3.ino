@@ -157,13 +157,13 @@ void setup()   {
     Serial.println("Time set!");
   }
 
-  delay ( 2000 );
+  //delay ( 2000 );
 
   // Setup Time library  
   display.clearDisplay();
   Serial.println("clearDisplay");
 
-  delay(2000);
+  //delay(2000);
 
   display.display(); 
 
@@ -189,43 +189,46 @@ void setup()   {
 
 }
 
-  char* SaatFormat(int hr, int min, int sec)
+  String SaatFormat(int hr, int min, int sec)
     {
-      char saatformat[16];
-      snprintf(saatformat, sizeof(saatformat), "%02d:%02d:%02d",
-               hr, min, sec);
-      return  saatformat;
+      //String timestr = String() + (hr < 10 ? "0" : "") + hr  + ':' + (min < 10 ? "0" : "") + min + ":" + (sec < 10 ? "0" : "") + sec;
+      char timestr[6];
+      timestr[0] = '0' + hr / 10;
+      timestr[1] = '0' + hr % 10;
+      timestr[2] = ':';
+      timestr[3] = '0' + min / 10;
+      timestr[4] = '0' + min % 10;
+      //timestr[5] = ':';
+      //timestr[6] = '0' + sec / 10;      
+      //timestr[7] = '0' + sec % 10;
+      timestr[5] = '\0';
+      //char format[16];
+      //snprintf(format, sizeof(format), "%02d:%02d:%02d", hr, min, sec);
+      return timestr;
     }
 
-  char* AlarmFormat(int hr, int min)
+  String AlarmFormat(int hr, int min)
     {
-      char format[16];
-      snprintf(format, sizeof(format), "%02d:%02d",
-               hr, min);
-      return  format;
+      //char format[16];
+      //snprintf(format, sizeof(format), "%02d:%02d\0", hr, min);
+      char alarmstr[6];
+      alarmstr[0] = '0' + hr / 10;
+      alarmstr[1] = '0' + hr % 10;
+      alarmstr[2] = ':';
+      alarmstr[3] = '0' + min / 10;
+      alarmstr[4] = '0' + min % 10;
+      alarmstr[5] = '\0';
+      return  alarmstr;
     }
 
-  char* ScaleFormat(float scale)
+  String ScaleFormat(float scale)
     {
-
-/*
-/* 4 is mininum width, 2 is precision; float value is copied onto str_temp*/
-//dtostrf(temp, 4, 2, str_temp);
-
-      //snprintf(format, sizeof(format), "%02d", scale);
-      //return  format;
-/*
-char str_temp[6];
-char format[6];
-//4 is mininum width, 2 is precision; float value is copied onto str_temp
-dtostrf(scale, 4, 2, str_temp);
-sprintf(format,"%s gr", str_temp);
-return  format;
-
-*/
-char format[4];
-snprintf(format, sizeof(format), "%d", (int)scale);
-return  format;
+      int iscale = scale;
+      char scalestr[3];
+      scalestr[0] = '0' + iscale / 10;
+      scalestr[1] = '0' + iscale % 10;
+      scalestr[1] = '\0';
+      return  scalestr;
     }    
 
 
@@ -233,14 +236,14 @@ void loop() {
   DateTime now = RTC.now(); 
   clockText =  SaatFormat(now.hour(), now.minute(),now.second());
   alarmText = AlarmFormat(alarmHr, alarmMin);
-  //Serial.println(clockText);
+  Serial.println(clockText);
   clockMin = now.minute();
   clockHr = now.hour();
 
   //Serial.print("Reading: ");
   float scl = scale.get_units();
   Serial.println(scl, 1); //scale.get_units() returns a float
-  scaleText = ScaleFormat(scl);
+  //scaleText = ScaleFormat(scl);
   //Serial.print(" gr"); //You can change this to kg but you'll need to refactor the calibration_factor
   //Serial.println();
 
@@ -453,11 +456,9 @@ void loop() {
   display.setTextSize(2);
   display.print(alarmText);
 
-display.setCursor(0,55);
-display.setTextSize(1);
-display.print(scaleText);
-  
- 
+  display.setCursor(0,55);
+  display.setTextSize(1);
+  display.print(scaleText);
 
   display.display();
 
