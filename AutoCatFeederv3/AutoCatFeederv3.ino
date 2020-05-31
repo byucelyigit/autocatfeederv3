@@ -36,19 +36,19 @@ buttonStatus
 
 #include <SPI.h>
 #include <Wire.h>
-//#include <Adafruit_GFX.h>
+#include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 #include <X113647Stepper.h>
 #include <RTClib.h>
 #include <SoftwareWire.h>
-#include <HX711.h>
+//#include <HX711.h>
 
 
 
 #define DOUT1 7
 #define CLK1  6
 
-HX711 scale;
+//HX711 scale;
 
 
 RTC_DS1307 RTC;
@@ -78,9 +78,9 @@ int buttonStatus = 0;
 int doorStatus = 0;
 bool positionKnown = false;
 String displayText = "";
-String clockText ="";
-String scaleText = "";
-String alarmText ="";
+//String clockText ="";
+//String scaleText = "";
+//String alarmText ="";
 int mode = 0;
 int timerCount = 0;
 bool button3Pressed = false;
@@ -137,19 +137,19 @@ void setup()   {
   display.setCursor(0,0);
   display.clearDisplay();
 
-  scale.begin(DOUT1, CLK1);
+  //scale.begin(DOUT1, CLK1);
 
 
 
 
-  scale.set_scale(calibration_factor); //This value is obtained by using the SparkFun_HX711_Calibration sketch
+  //scale.set_scale(calibration_factor); //This value is obtained by using the SparkFun_HX711_Calibration sketch
 
-  long zero_factor = scale.read_average(); //Get a baseline reading
-  Serial.print("Zero factor: "); //This can be used to remove the need to tare the scale. Useful in permanent scale projects.
-  Serial.println(zero_factor); 
+  //long zero_factor = scale.read_average(); //Get a baseline reading
+  //Serial.print("Zero factor: "); //This can be used to remove the need to tare the scale. Useful in permanent scale projects.
+  //Serial.println(zero_factor); 
 
 
-  scale.tare(); //Assuming there is no weight on the scale at start up, reset the scale to 0
+  //scale.tare(); //Assuming there is no weight on the scale at start up, reset the scale to 0
 
   //Serial.println("Readings:");
 
@@ -197,10 +197,10 @@ void setup()   {
 
 }
 
-  String SaatFormat(int hr, int min, int sec)
+  char * SaatFormat(int hr, int min, int sec)
     {
       //String timestr = String() + (hr < 10 ? "0" : "") + hr  + ':' + (min < 10 ? "0" : "") + min + ":" + (sec < 10 ? "0" : "") + sec;
-      char timestr[6];
+      char * timestr = (char *) malloc(6);
       timestr[0] = '0' + hr / 10;
       timestr[1] = '0' + hr % 10;
       timestr[2] = ':';
@@ -215,11 +215,11 @@ void setup()   {
       return timestr;
     }
 
-  String AlarmFormat(int hr, int min)
+  char * AlarmFormat(int hr, int min)
     {
       //char format[16];
       //snprintf(format, sizeof(format), "%02d:%02d\0", hr, min);
-      char alarmstr[6];
+      char * alarmstr = (char *) malloc(6);
       alarmstr[0] = '0' + hr / 10;
       alarmstr[1] = '0' + hr % 10;
       alarmstr[2] = ':';
@@ -229,29 +229,30 @@ void setup()   {
       return  alarmstr;
     }
 
-  String ScaleFormat(float scale)
+/*
+  char * ScaleFormat(float scale)
     {
       int iscale = scale;
-      char scalestr[3];
+      char * scalestr = (char *) malloc(3);
       scalestr[0] = '0' + iscale / 10;
       scalestr[1] = '0' + iscale % 10;
-      scalestr[1] = '\0';
+      scalestr[2] = '\0';
       return  scalestr;
     }    
-
+*/
 
 void loop() {
   DateTime now = RTC.now(); 
-  clockText =  SaatFormat(now.hour(), now.minute(),now.second());
-  alarmText = AlarmFormat(alarmHr, alarmMin);
-  Serial.println(clockText);
+  //clockText =  SaatFormat(now.hour(), now.minute(),now.second());
+  //alarmText = AlarmFormat(alarmHr, alarmMin);
+  //Serial.println(clockText);
   clockMin = now.minute();
   clockHr = now.hour();
 
   //Serial.print("Reading: ");
-  float scl = scale.get_units();
-  Serial.println(scl); //scale.get_units() returns a float
-  scaleText = ScaleFormat(scl);
+  //float scl = scale.get_units();
+
+  //scaleText = ScaleFormat(scl);
   //Serial.print(" gr"); //You can change this to kg but you'll need to refactor the calibration_factor
   //Serial.println();
 
@@ -278,11 +279,13 @@ void loop() {
     //mode = 1; // motor runs
     if(!button3Pressed)
     {
+      
       switch(buttonStatus) {
         case 1: 
           buttonStatus = 2;
           displayText = "Mode: Set Alarm";
-          //RTC.adjust(DateTime(2019,1,21,clockHr,clockMin,0));
+          //RTC.adjust(DateTime(__DATE__, __TIME__));
+          RTC.adjust(DateTime(2019,1,21,clockHr,clockMin,0));
           break;
         case 2:
           buttonStatus = 0;
@@ -448,6 +451,9 @@ void loop() {
     doorStatus = 0;
   }
 
+
+  //Serial.println(scale.get_units()); // returns a float
+
   display.clearDisplay();
   display.setTextSize(1);
   display.setTextColor(WHITE);
@@ -457,16 +463,20 @@ void loop() {
   display.setCursor(0,18);
   display.setTextSize(2);
 
-  display.print(clockText);
+
+  //clockText =  SaatFormat(now.hour(), now.minute(),now.second());
+  //alarmText = AlarmFormat(alarmHr, alarmMin);
+
+  display.print(SaatFormat(now.hour(), now.minute(),now.second()));
 
   
   display.setCursor(0,40);
   display.setTextSize(2);
-  display.print(alarmText);
+  display.print(AlarmFormat(alarmHr, alarmMin));
 
-  display.setCursor(0,55);
-  display.setTextSize(1);
-  display.print(scaleText);
+  //display.setCursor(0,55);
+  //display.setTextSize(1);
+  //display.print(scaleText);
 
   display.display();
 
