@@ -146,7 +146,7 @@ void setup()   {
 
   long zero_factor = scale.read_average(); //Get a baseline reading
   Serial.print("Zero factor: "); //This can be used to remove the need to tare the scale. Useful in permanent scale projects.
-  Serial.println(zero_factor);
+  Serial.println(zero_factor); 
 
 
   scale.tare(); //Assuming there is no weight on the scale at start up, reset the scale to 0
