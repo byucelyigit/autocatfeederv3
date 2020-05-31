@@ -499,12 +499,12 @@ void loop() {
 
   char alarmstr[4];
   alarmstr[0] = '0' + alarmHr / 10;
-  alarmstr[1] = '0' + alarmHr() % 10;
+  alarmstr[1] = '0' + alarmHr % 10;
   display.print(alarmstr[0]);
   display.print(alarmstr[1]);
   display.print(":");
   alarmstr[2] = '0' + alarmMin / 10;
-  alarmstr[3] = '0' + alarmMin() % 10;
+  alarmstr[3] = '0' + alarmMin % 10;
   display.print(alarmstr[2]);
   display.print(alarmstr[3]);
 
