@@ -41,14 +41,14 @@ buttonStatus
 #include <X113647Stepper.h>
 #include <RTClib.h>
 #include <SoftwareWire.h>
-//#include <HX711.h>
+#include <HX711.h>
 
 
 
 #define DOUT1 7
 #define CLK1  6
 
-//HX711 scale;
+HX711 scale;
 
 
 RTC_DS1307 RTC;
@@ -137,19 +137,19 @@ void setup()   {
   display.setCursor(0,0);
   display.clearDisplay();
 
-  //scale.begin(DOUT1, CLK1);
+  scale.begin(DOUT1, CLK1);
 
 
 
 
-  //scale.set_scale(calibration_factor); //This value is obtained by using the SparkFun_HX711_Calibration sketch
+  scale.set_scale(calibration_factor); //This value is obtained by using the SparkFun_HX711_Calibration sketch
 
   //long zero_factor = scale.read_average(); //Get a baseline reading
   //Serial.print("Zero factor: "); //This can be used to remove the need to tare the scale. Useful in permanent scale projects.
   //Serial.println(zero_factor); 
 
 
-  //scale.tare(); //Assuming there is no weight on the scale at start up, reset the scale to 0
+  scale.tare(); //Assuming there is no weight on the scale at start up, reset the scale to 0
 
   //Serial.println("Readings:");
 
@@ -165,13 +165,13 @@ void setup()   {
     Serial.println("Time set!");
   }
 
-  //delay ( 2000 );
+  delay ( 2000 );
 
   // Setup Time library  
   display.clearDisplay();
   Serial.println("clearDisplay");
 
-  //delay(2000);
+  delay(2000);
 
   display.display(); 
 
@@ -249,9 +249,13 @@ void loop() {
   clockMin = now.minute();
   clockHr = now.hour();
 
+
+  
+  
+
   //Serial.print("Reading: ");
   //float scl = scale.get_units();
-
+  Serial.println(scale.get_units());
   //scaleText = ScaleFormat(scl);
   //Serial.print(" gr"); //You can change this to kg but you'll need to refactor the calibration_factor
   //Serial.println();
@@ -267,8 +271,17 @@ void loop() {
     if((clockMin==alarmMin) && (clockHr==alarmHr) && (now.second() == 0))
     {
       mode = 10;
+      Serial.println("ALAAAAAAAAAAAARRMMMMMMMMMMMMMMMMMMMMMMMMM");
     }
   }
+  Serial.println("C------------------");
+  Serial.println(clockHr);
+  Serial.println(clockMin);
+  Serial.println("A------------------");
+  Serial.println(alarmHr);
+  Serial.println(alarmMin);
+  Serial.println("M--------------------");
+  Serial.println(mode);
 
   if(buttonState3==1)
   {
@@ -467,12 +480,19 @@ void loop() {
   //clockText =  SaatFormat(now.hour(), now.minute(),now.second());
   //alarmText = AlarmFormat(alarmHr, alarmMin);
 
-  display.print(SaatFormat(now.hour(), now.minute(),now.second()));
+  //display.print(SaatFormat(now.hour(), now.minute(),now.second()));
 
+  display.print(now.hour());
+  display.print(":");
+  display.print(now.minute());
   
   display.setCursor(0,40);
   display.setTextSize(2);
-  display.print(AlarmFormat(alarmHr, alarmMin));
+  //display.print(AlarmFormat(alarmHr, alarmMin));
+  display.print(alarmHr);
+  display.print(":");
+  display.print(alarmMin);
+  
 
   //display.setCursor(0,55);
   //display.setTextSize(1);
